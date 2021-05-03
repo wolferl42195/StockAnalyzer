@@ -4,6 +4,7 @@ package stockanalyzer.ui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Scanner;
 
 import stockanalyzer.ctrl.Controller;
 import yahooApi.yahooFinanceIOException;
@@ -37,19 +38,17 @@ public class UserInterface
 		}
 	}
 
-	/*
-	public void getDataFromCtrl4(String userinputstock){
+	public void getDataForCustomInput() {
+		Scanner sc = new Scanner(System.in);
+		System.out.print("Geben Sie die gewünschte Aktie ein: ");
+		String userinputstock = sc.next();
+
 		try {
-			ctrl.process(userinputsock);
+			ctrl.process(userinputstock);
 		} catch (yahooFinanceIOException e) {
 			e.printStackTrace();
 		}
-	}
-	 */
 
-
-	public void getDataForCustomInput() {
-		
 	}
 
 
@@ -59,9 +58,7 @@ public class UserInterface
 		menu.insert("a", "Choice 1", this::getDataFromCtrl1);
 		menu.insert("b", "Choice 2", this::getDataFromCtrl2);
 		menu.insert("c", "Choice 3", this::getDataFromCtrl3);
-		//menu.insert("d", "Choice User Imput:",this::getDataForCustomInput);
-		//menu.insert("z", "Choice User Imput:", i->i::getDataFromCtrl4);
-		//menu.insert("z", "Choice User Imput:",this::getDataFromCtrl4);
+		menu.insert("d", "Choice User Imput:",this::getDataForCustomInput);
 		menu.insert("q", "Quit", null);
 		Runnable choice;
 		while ((choice = menu.exec()) != null) {
