@@ -54,6 +54,7 @@ public class Asset {
 
     public Quote getLastQuote() {
         //TODO
+
         return null;
     }
 
