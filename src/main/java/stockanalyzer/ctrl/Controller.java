@@ -1,5 +1,7 @@
 package stockanalyzer.ctrl;
 
+import yahooApi.beans.Downloader;
+import yahooApi.beans.SequentialDownloader;
 import yahoofinance.YahooFinance;
 import yahoofinance.histquotes.Interval;
 import yahooApi.beans.QuoteResponse;
@@ -67,6 +69,10 @@ public class Controller {
 		*/
 
 		return null;
+	}
+
+	public void downloadtickers(List <String> tickers, Downloader downloader) throws yahooFinanceIOException {
+		downloader.process(tickers);
 	}
 
 

@@ -4,9 +4,14 @@ package stockanalyzer.ui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import stockanalyzer.ctrl.Controller;
+import yahooApi.beans.Downloader;
+import yahooApi.beans.ParallelDownloader;
+import yahooApi.beans.SequentialDownloader;
 import yahooApi.yahooFinanceIOException;
 
 public class UserInterface 
@@ -51,6 +56,30 @@ public class UserInterface
 
 	}
 
+	public void getDownloadedTickers(){
+		try {
+			Downloader downloader;
+			List<String> tickers = new ArrayList<>();
+
+			Scanner sc = new Scanner(System.in);
+			System.out.print("Geben Sie die gewünschten Aktie ein und tippen Sie nach jeder Angabe auf [ENTER]. Zum Bestätigen drücken Sie 2x [ENTER]: ");
+
+			while(!sc.equals("")){
+				tickers.add(sc.next());
+			}
+
+			System.out.print("Für sequenziellen Download: [S] ; Für parallelen Download: [D]");
+			if(sc.equals('S'))
+				downloader = new SequentialDownloader();
+			else downloader = new ParallelDownloader();
+
+			ctrl.downloadtickers( tickers, downloader);
+		} catch (yahooFinanceIOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
 
 	public void start() {
 		Menu<Runnable> menu = new Menu<>("User Interface");
@@ -59,6 +88,7 @@ public class UserInterface
 		menu.insert("b", "Choice 2", this::getDataFromCtrl2);
 		menu.insert("c", "Choice 3", this::getDataFromCtrl3);
 		menu.insert("d", "Choice User Imput:",this::getDataForCustomInput);
+		menu.insert("e", "Download Tickers:",this::getDownloadedTickers);
 		menu.insert("q", "Quit", null);
 		Runnable choice;
 		while ((choice = menu.exec()) != null) {
