@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Scanner;
 
 import stockanalyzer.ctrl.Controller;
-import yahooApi.beans.Downloader;
-import yahooApi.beans.ParallelDownloader;
-import yahooApi.beans.SequentialDownloader;
+import stockanalyzer.downloader.Downloader;
+import stockanalyzer.downloader.ParallelDownloader;
+import stockanalyzer.downloader.SequentialDownloader;
 import yahooApi.yahooFinanceIOException;
 
 public class UserInterface 
@@ -62,18 +62,31 @@ public class UserInterface
 			List<String> tickers = new ArrayList<>();
 
 			Scanner sc = new Scanner(System.in);
-			System.out.print("Geben Sie die gewünschten Aktie ein und tippen Sie nach jeder Angabe auf [ENTER]. Zum Bestätigen drücken Sie 2x [ENTER]: ");
+			System.out.println("Geben Sie die gewünschten Aktie ein und tippen Sie nach jeder Angabe auf [ENTER]. Zum Bestätigen drücken Sie [.]: ");
 
-			while(!sc.equals("")){
-				tickers.add(sc.next());
+			while (true) {
+				String ticker = sc.next();
+				if (ticker.equals("."))
+					break;
+				else{
+					tickers.add(ticker);
+				}
 			}
 
-			System.out.print("Für sequenziellen Download: [S] ; Für parallelen Download: [D]");
-			if(sc.equals('S'))
-				downloader = new SequentialDownloader();
-			else downloader = new ParallelDownloader();
+			System.out.print("Für sequenziellen Download: [S] ; Für parallelen Download: [P]: ");
 
-			ctrl.downloadtickers( tickers, downloader);
+			String downloadselection = sc.next();
+			if (downloadselection.equals("S") || downloadselection.equals("s")){
+				downloader = new SequentialDownloader();
+				System.out.println("Sequential Download started...");
+			}
+			else {
+				downloader = new ParallelDownloader();
+				System.out.println("Parallel Download started...");
+			}
+
+			ctrl.downloadtickers(tickers, downloader);
+
 		} catch (yahooFinanceIOException e) {
 			e.printStackTrace();
 		}

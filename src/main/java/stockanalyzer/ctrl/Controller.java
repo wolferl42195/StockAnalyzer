@@ -1,16 +1,12 @@
 package stockanalyzer.ctrl;
 
-import yahooApi.beans.Downloader;
-import yahooApi.beans.SequentialDownloader;
+import stockanalyzer.downloader.Downloader;
 import yahoofinance.YahooFinance;
 import yahoofinance.histquotes.Interval;
-import yahooApi.beans.QuoteResponse;
-import yahooApi.beans.YahooResponse;
 import yahooApi.yahooFinanceIOException;
 import yahoofinance.Stock;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 

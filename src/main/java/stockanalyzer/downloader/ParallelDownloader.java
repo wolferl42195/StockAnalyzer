@@ -1,8 +1,7 @@
-package yahooApi.beans;
+package stockanalyzer.downloader;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -13,6 +12,7 @@ public class ParallelDownloader extends Downloader{
     public int process(List<String> tickers) {
 
         int count = 0;
+        /*
 
         ArrayList<Runnable> runnables = new ArrayList<>();
         ExecutorService executor = Executors.newCachedThreadPool();
@@ -34,8 +34,16 @@ public class ParallelDownloader extends Downloader{
 
         for(Runnable runnable:runnables){
             executor.execute(runnable);
-        }
+        } */
 
         return count;
+    }
+
+    static class Task implements Callable{
+
+        @Override
+        public Object call() throws Exception {
+            return null;
+        }
     }
 }

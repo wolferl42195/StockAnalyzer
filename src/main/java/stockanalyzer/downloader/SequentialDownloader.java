@@ -1,4 +1,4 @@
-package yahooApi.beans;
+package stockanalyzer.downloader;
 
 import java.util.List;
 
