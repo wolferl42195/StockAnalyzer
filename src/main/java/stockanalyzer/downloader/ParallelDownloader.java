@@ -2,48 +2,43 @@ package stockanalyzer.downloader;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 public class ParallelDownloader extends Downloader{
     @Override
     public int process(List<String> tickers) {
 
-        int count = 0;
-        /*
-
-        ArrayList<Runnable> runnables = new ArrayList<>();
         ExecutorService executor = Executors.newCachedThreadPool();
+        List<Future> futures = new ArrayList<>();
 
-        for(int i = 0; i <= tickers.size(); i+=8) {
-            runnables.add(new Runnable() {
-                @Override
-                public void run() {
-                    Integer count = 0;
-                    for (String ticker : tickers) {
-                        String fileName = saveJson2File(ticker);
-                        if(fileName != null)
-                            count++;
-                    }
-                    Future<Integer> countint = executor.submit(count);
-                }
-            });
+        for(String ticker : tickers){
+            futures.add(executor.submit(new Task(ticker)));
         }
 
-        for(Runnable runnable:runnables){
-            executor.execute(runnable);
-        } */
-
-        return count;
+        for(int i = 0; i < tickers.size(); i++) {
+            Future<String> future = futures.get(i);
+            try{
+                System.out.println("downloaded: " + tickers.get(i) + " to " + future.get());
+            } catch (InterruptedException e){
+                e.printStackTrace();
+            } catch (ExecutionException e){
+                e.printStackTrace();
+            }
+        }
+        return futures.size();
     }
 
-    static class Task implements Callable{
+    static class Task implements Callable<String>{
+        private String ticker;
+
+        public Task(String ticker){
+            this.ticker = ticker;
+        }
 
         @Override
-        public Object call() throws Exception {
-            return null;
+        public String call() throws Exception {
+            SequentialDownloader sd = new SequentialDownloader();
+            return sd.saveJson2File(ticker);
         }
     }
 }
