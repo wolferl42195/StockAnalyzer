@@ -3,7 +3,9 @@ package stockanalyzer.ctrl;
 import yahooApi.YahooFinance;
 import yahooApi.beans.QuoteResponse;
 import yahooApi.beans.YahooResponse;
+import yahoofinance.Stock;
 
+import java.io.IOException;
 import java.util.*;
 
 public class Controller {
@@ -11,9 +13,19 @@ public class Controller {
 	List<String> tickers = Arrays.asList("AAPL", "AMZN", "TSLA", "GOOG", "OMV.VI",
 			"EBS.VI","DOC.VI","SBO.VI","RBI.VI","VIG.VI","TKA.VI","VOE.VI","FACC.VI","ANDR.VI","VER.VI",
 			"WIE.VI","CAI.VI","BG.VI","POST.VI","LNZ.VI","UQA.VI","SPI.VI","ATS.VI","IIA.VI");
+
+
+
 	public void process(String ticker) {
 		System.out.println("Start process");
 
+		Stock stock = null;
+		try {
+			stock = yahoofinance.YahooFinance.get("AAPL");
+			stock.getHistory().forEach(System.out::println);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		try {
 			getData(ticker);	//1) Daten laden

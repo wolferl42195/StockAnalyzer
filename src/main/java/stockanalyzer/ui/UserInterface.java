@@ -4,13 +4,17 @@ package stockanalyzer.ui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 import stockanalyzer.ctrl.Controller;
+import stockanalyzer.downloader.SequentialDownloader;
 
 public class UserInterface 
 {
 
 	private Controller ctrl = new Controller();
+
+	private SequentialDownloader serialDownloader;
 
 	public void getDataFromCtrl1(){
 		ctrl.process("ABC");
@@ -30,6 +34,10 @@ public class UserInterface
 		
 	}
 
+	public void downloadData() {
+		serialDownloader.process(Arrays.asList("AMZN", "TSLA", "GOOG"));
+	}
+
 
 	public void start() {
 		Menu<Runnable> menu = new Menu<>("User Interfacx");
@@ -39,6 +47,7 @@ public class UserInterface
 		menu.insert("c", "Choice 3", this::getDataFromCtrl3);
 		menu.insert("d", "Choice User Imput:",this::getDataForCustomInput);
 		menu.insert("z", "Choice User Imput:",this::getDataFromCtrl4);
+		menu.insert("i", "Download tickers", this::downloadData);
 		menu.insert("q", "Quit", null);
 		Runnable choice;
 		while ((choice = menu.exec()) != null) {
